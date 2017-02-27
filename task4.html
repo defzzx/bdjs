@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>tast4</title>
+<style type="text/css">
+span {
+	background: #f00;
+	font-size: 22px;
+	margin: 5px;
+}
+</style>
+</head>
+<body>
+<input type="text" id="input" />
+<button id="lin" title="1">左侧入</button>
+<button id="rin" title="2">右侧入</button>
+<button id="lout" title="3">左侧出</button>
+<button id="rout" title="4">右侧出</button>
+<div id="box"><span>10</span>
+	<span>3</span>
+	<span>7</span>
+	<span>11</span>
+	<span>12</span>
+	<span>30</span></div>
+
+<script type="text/javascript">
+var arr = [];
+var btn = document.getElementsByTagName('button');
+var box = document.getElementById('box');
+for(var i = 0; i < btn.length; i++) {
+	btn[i].onclick = function() {
+		var inputText = document.getElementById('input').value;
+
+		if(this.title == 1) {
+			if(!inputText) {
+				return false;
+			}
+			var span = document.createElement('span');
+			span.innerHTML = inputText;
+			box.insertBefore(span, box.childNodes[0]);
+
+		}
+		if(this.title == 2) {
+			if(!inputText) {
+				return false;
+			}
+			var span = document.createElement('span');
+			span.innerHTML = inputText;
+			box.appendChild(span);
+		}
+		if(this.title == 3) {
+			var spans = document.getElementsByTagName('span');
+			var spanf = spans[0].innerHTML;
+			box.removeChild(spans[0])
+			alert(spanf)
+		}
+		if(this.title == 4) {
+			var spans = document.getElementsByTagName('span');
+			var last = spans.length;
+			var spanf = spans[last - 1].innerHTML;
+			box.removeChild(spans[last - 1]);
+			alert(spanf)
+		}
+	}
+}
+</script>
+</body>
+</html>
