@@ -63,6 +63,12 @@ for(var i = 0; i < btn.length; i++) {
 			alert(spanf)
 		}
 	}
+	var spans = document.getElementsByTagName('span');
+	for(var f = 0; f < spans.length; f++) {
+		spans[f].onclick = function() {
+			box.removeChild(this);
+		}
+	}
 }
 </script>
 </body>
