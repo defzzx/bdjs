@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>tast4</title>
+<style type="text/css">
+#box span {
+	background: #ccc;
+	font-size: 22px;
+	margin: 5px;
+}
+</style>
+</head>
+<body>
+<textarea id="input" value="请输入"></textarea>
+<button id="lin" title="1">左侧入</button>
+<button id="rin" title="2">右侧入</button>
+<button id="lout" title="3">左侧出</button>
+<button id="rout" title="4">右侧出</button>
+<input id="search" type="text" placeholder="请输入查询内容">
+<input type="button" id="searchfor" value="查询" />
+<div id="box"><span>10</span>
+	<span>3</span>
+	<span>7</span>
+	<span>11</span>
+	<span>12</span>
+	<span>30</span></div>
+
+<script type="text/javascript">
+var arr = [];
+var btn = document.getElementsByTagName('button');
+var box = document.getElementById('box');
+for(var i = 0; i < btn.length; i++) {
+	btn[i].onclick = function() {
+		var inputText = document.getElementById('input').value;
+		if(this.title == 1) {
+			if(!inputText) {
+				return false;
+			}
+			var span = document.createElement('span');
+			span.innerHTML = inputText;
+			box.insertBefore(span, box.childNodes[0]);
+		}
+		if(this.title == 2) {
+			if(!inputText) {
+				return false;
+			}
+			var span = document.createElement('span');
+			span.innerHTML = inputText;
+			box.appendChild(span);
+		}
+		if(this.title == 3) {
+			var spans = document.getElementsByTagName('span');
+			var spanf = spans[0].innerHTML;
+			box.removeChild(spans[0])
+			alert(spanf)
+		}
+		if(this.title == 4) {
+			var spans = document.getElementsByTagName('span');
+			var last = spans.length;
+			var spanf = spans[last - 1].innerHTML;
+			box.removeChild(spans[last - 1]);
+			alert(spanf)
+		}
+	}
+	var spans = document.getElementsByTagName('span');
+	for(var f = 0; f < spans.length; f++) {
+		spans[f].onclick = function() {
+			box.removeChild(this);
+		}
+	}
+}
+
+//查询
+var search = document.getElementById('searchfor');
+search.onclick = function() {
+	var inputText = document.getElementById('input').value;
+	var searchText = document.getElementById('search').value;
+	if(inputText.indexOf(searchText) < 0) {
+		alert('未匹配到所查询内容!')
+	} else {
+		var len = searchText.length;
+		var index = inputText.indexOf(searchText);
+		var div = document.createElement('div');
+		var html = document.getElementsByTagName('html')[0]
+		html.appendChild(div);
+		//添加查询词之前的文本节点
+		var txtbf = inputText.substring(0, index);
+		var txtbfNode = document.createTextNode(txtbf);
+		div.appendChild(txtbfNode);
+		//创建查询节点文本
+		var txt = document.createTextNode(searchText);
+		var span = document.createElement('span');
+		span.appendChild(txt);
+		span.style.color = '#f00';
+		div.appendChild(span);
+		//查询词之后文本节点内容
+		var txtaf = inputText.substr(index + len);
+		var txtafNode = document.createTextNode(txtaf);
+		div.appendChild(txtafNode);
+	}
+}
+</script>
+</body>
+</html>
