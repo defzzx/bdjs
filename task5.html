@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>tast4</title>
+<style type="text/css">
+#box {
+	height: 120px;
+	width: 600px;
+	display: flex;
+	align-items: flex-end;
+	border: 1px solid #ccc;
+}
+span {
+	background: #f00;
+	font-size: 16px;
+	margin: 0px;
+	width: 18px;
+	margin: 2px
+}
+</style>
+</head>
+<body>
+<input type="text" id="input" />
+<button>左侧入</button>
+<button>右侧入</button>
+<button>左侧出</button>
+<button>右侧出</button>
+<button>从小到大排序</button>
+<div id="box">
+</div>
+
+<script type="text/javascript">
+var btn = document.getElementsByTagName('button');
+var box = document.getElementById('box');
+(function() {
+	for(var i = 0; i < 5; i++) {
+		btn[i].onclick = function(n) {
+			return function() {
+				switch(n) {
+					case 0:
+
+						leftIn();
+						break;
+					case 1:
+						rightIn();
+						break;
+					case 2:
+						leftOut();
+						break;
+					case 3:
+						rightOut();
+						break;
+					case 4:
+						asort();
+						break;
+				}
+			}
+		}(i)
+	}
+}());
+
+function leftIn() {
+	var spans = box.getElementsByTagName('span');
+	var len = spans.length;
+	if(len >= 60) {
+		alert('数据超过60无法继续添加元素!');
+		return false;
+	}
+	var inputText = document.getElementById('input').value;
+	if(10 <= inputText && inputText <= 100) {
+		var span = document.createElement('span');
+		span.style.height = inputText + 'px';
+		box.insertBefore(span, box.childNodes[0])
+	} else {
+		alert("请输入10-100之间的数字");
+	}
+}
+
+function rightIn() {
+	var spans = box.getElementsByTagName('span');
+	var len = spans.length;
+	if(len >= 60) {
+		alert('数据超过60无法继续添加元素!');
+		return false;
+	}
+
+	var inputText = document.getElementById('input').value;
+	if(10 <= inputText && inputText <= 100) {
+		var span = document.createElement('span');
+		span.style.height = inputText + 'px';
+		box.appendChild(span);
+	} else {
+		alert("请输入10-100之间的数字");
+	}
+}
+
+function leftOut() {
+	var spans = box.getElementsByTagName('span');
+	box.removeChild(spans[0])
+}
+
+function rightOut() {
+	var spans = box.getElementsByTagName('span');
+	var len = spans.length
+	box.removeChild(spans[len - 1])
+}
+
+function asort() {
+	var spans = box.getElementsByTagName('span');
+	var spansHeight = [];
+	var swap = function(index1, index2) {
+		var val = spansHeight[index1];
+		spansHeight[index1] = spansHeight[index2];
+		spansHeight[index2] = val;
+	}
+
+	function sb() {
+		for(var e = 0; e < spans.length; e++) {
+			spansHeight.push(spans[e].offsetHeight)
+		}
+
+		for(var i = 0; i < spansHeight.length; i++) {
+			for(var j = 0; j < spansHeight.length; j++) {
+				if(spansHeight[j] > spansHeight[j + 1]) {
+					swap(j, j + 1);
+				}
+
+			}
+		}
+	}
+	(function() {
+		sb();
+		var spans = box.getElementsByTagName('span');
+		for(var i = 0; i < spans.length; i++) {
+			spans[i].style.height = spansHeight[i] + 'px';
+		}
+	})()
+}
+</script>
+</body>
+</html>
