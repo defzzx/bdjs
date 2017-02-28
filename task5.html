@@ -121,7 +121,7 @@ function asort() {
 		}
 
 		for(var i = 0; i < spansHeight.length; i++) {
-			for(var j = 0; j < spansHeight.length; j++) {
+			for(var j = 0; j < spansHeight.length-i-1; j++) {
 				if(spansHeight[j] > spansHeight[j + 1]) {
 					swap(j, j + 1);
 				}
