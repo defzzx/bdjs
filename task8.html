@@ -24,9 +24,9 @@ div {
 </head>
 <body>
 <button id="mid">多叉树遍历</button>
-<input type="text" id="sea">
+<input type="text" id="sea" placeholder="查询内容不能为空">
 <button id="search">查询</button>
-<div class="root" id="root">
+<div class="root" id="root" >
 
 	super
 
@@ -92,10 +92,13 @@ mid.onclick = function() {
 	kfc();
 }
 search.onclick = function() {
+	var sec = document.getElementById('sea').value;
+	if(!sec){
+		alert('请输入查询内容!');
+		return false;
+	}
 	kfc1();
-
 }
-
 //绑定先序遍历函数
 function kfc() {
 	if(k != 0) {
@@ -105,7 +108,6 @@ function kfc() {
 		goTime = setInterval(setGo, 1000)
 	}
 }
-
 function kfc1() {
 	if(k != 0) {
 		pd();
@@ -163,18 +165,15 @@ function goTraverse(node, cback) {
 		if(node.childElementCount == 1) {
 			cback(node);
 			goTraverse(node.firstElementChild, cback);
-
 		} else if(node.childElementCount == 2) {
 			cback(node);
 			goTraverse(node.firstElementChild, cback);
 			goTraverse(node.firstElementChild.nextElementSibling, cback);
-
 		} else if(node.childElementCount == 3) {
 			cback(node);
 			goTraverse(node.firstElementChild, cback);
 			goTraverse(node.firstElementChild.nextElementSibling, cback);
 			goTraverse(node.lastElementChild, cback)
-
 		} else if(node.childElementCount == 0) {
 			cback(node);
 		}else if(node.childElementCount==4){
