@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>task7</title>
+<style type="text/css">
+div {
+	display: flex;
+	border: 2px solid #000;
+	margin: 10px 5px;
+	flex: 1;
+}
+#root {
+	margin-top: 10px;
+	display: flex;
+	width: 500px;
+	height: 100px;
+	border: 2px solid #000;
+}
+div {
+	transition: background .8s
+}
+</style>
+</head>
+<body>
+<button id="mid">中序遍历</button>
+<button id="pre">先序遍历</button>
+<div class="root" id="root">
+	<div>
+		<div>
+			<div></div>
+			<div></div>
+		</div>
+		<div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+	<div>
+		<div>
+			<div></div>
+			<div></div>
+		</div>
+		<div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var mid = document.getElementById('mid');
+var pre = document.getElementById('pre');
+var root = document.getElementById('root');
+var arr = [];
+var k = 0,
+	goTime = null;
+//建立判断定时器是否开启函数
+var pd = function() {
+	clearInterval(goTime);
+	for(var i = 0; i < arr.length; i++) {
+		arr[i].style.background = '#fff'
+	}
+	k = 0;
+	arr = []
+}
+//绑定中序遍历事件
+mid.onclick = function() {
+	if(k != 0) {
+		pd();
+	} else {
+		goTraverse(root, cback);
+		goTime = setInterval(setGo, 1000)
+	}
+}
+//绑定先序遍历函数
+pre.onclick = function() {
+	if(k != 0) {
+		pd()
+	} else {
+		goPreTraverse(root, cback);
+		goTime = setInterval(setGo, 1000);
+	}
+
+}
+//遍历元素组成数组
+var cback = function(el) {
+	arr.push(el);
+}
+//随机颜色函数
+function bgc() {
+	var r = Math.floor(Math.random() * 256);
+	var g = Math.floor(Math.random() * 256);
+	var b = Math.floor(Math.random() * 256);
+	return "rgb(" + r + ',' + g + ',' + b + ")";
+}
+//定时加入背景颜色样式
+function setGo() {
+	if(k < arr.length) {
+		arr[k].style.background = bgc();
+		console.log(k)
+		k++;
+	} else {
+		k = 0;
+		clearInterval(goTime)
+	}
+}
+//中序遍历函数
+function goTraverse(node, cback) {
+	if(node !== null) {
+		goTraverse(node.firstElementChild, cback);
+		cback(node)
+		goTraverse(node.lastElementChild, cback);
+	}
+}
+//先序遍历函数
+function goPreTraverse(node, cback) {
+	if(node !== null) {
+		cback(node)
+		goPreTraverse(node.firstElementChild, cback);
+		goPreTraverse(node.lastElementChild, cback);
+	}
+}
+</script>
+</body>
+</html>
