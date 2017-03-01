@@ -93,7 +93,7 @@ mid.onclick = function() {
 }
 search.onclick = function() {
 	var sec = document.getElementById('sea').value;
-	if(!sec){
+	if(!sec.trim()){
 		alert('请输入查询内容!');
 		return false;
 	}
