@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>task9</title>
+<style type="text/css">
+div {
+	display: flex;
+	border: 2px solid #000;
+	margin: 10px 5px;
+	flex: 1;
+}
+#root {
+	margin-top: 10px;
+	display: flex;
+	width: 1300px;
+	height: 150px;
+	border: 2px solid #000;
+}
+div {
+	transition: background .8s
+}
+.key {
+	border-color: #f00;
+}
+</style>
+</head>
+<body>
+<button id="mid">多叉树遍历</button>
+<input type="text" id="sea" placeholder="查询内容不能为空">
+<button id="search">查询</button>
+<input type="text" id="addtext" placeholder="super类无法继续添加元素" />
+<button id="add">添加</button>
+<button id="remove">删除</button>
+<div class="root" id="root">
+
+	super
+
+	<div>animal
+		<div>cat</div>
+		<div>dog
+			<div>
+				gsdog
+			</div>
+			<div>
+				tcdog
+
+			</div>
+		</div>
+	</div>
+	<div>car
+		<div>honda</div>
+		<div>benz</div>
+		<div>other
+			<div>
+				mass
+			</div>
+			<div>
+				bike
+			</div>
+			<div>
+				jp
+			</div>
+			<div>
+				sp
+			</div>
+		</div>
+	</div>
+	<div>fruit
+		<div>apple</div>
+		<div>orange</div>
+		<div>greens
+			<div>lala
+				<div>haha</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<script type="text/javascript">
+var search = document.getElementById('search');
+var mid = document.getElementById('mid');
+var root = document.getElementById('root');
+var remove = document.getElementById('remove');
+var arr = [];
+var k = 0,
+	goTime = null;
+var divs = document.getElementsByTagName('div');
+for(var s = 0; s < divs.length; s++) {
+	divs[s].onclick = function(e) {
+		e.stopPropagation();
+		this.className = (this.className == 'key') ? '' : 'key';
+	}
+}
+remove.onclick = function() {
+	var a = 0;
+	for(var i = 0; i < divs.length; i++) {
+		if(divs[i].className == 'key') {
+			divs[i].parentNode.removeChild(divs[i]);
+			a++;
+		}
+		if(i == divs.length - 1 && a == 0) {
+			alert('请选择所要删除的节点')
+		}
+	}
+}
+
+var add = document.getElementById('add');
+add.onclick = function() {
+	var addText = document.getElementById('addtext').value;
+	for(var i = 0; i < divs.length; i++) {
+		if(divs[i].className == 'key') {
+			if(divs[i].childElementCount > 3) {
+				alert('子元素达到上限无法添加')
+			} else {
+				var div = document.createElement('div');
+				var text = document.createTextNode(addText);
+				div.appendChild(text);
+				divs[i].appendChild(div);
+			}
+
+		}
+	}
+}
+
+//建立判断定时器是否开启函数
+var pd = function() {
+	clearInterval(goTime);
+	for(var i = 0; i < arr.length; i++) {
+		arr[i].style.background = '#fff'
+	}
+	k = 0;
+	arr = []
+}
+//绑定中序遍历事件
+mid.onclick = function() {
+	kfc();
+}
+search.onclick = function() {
+	var sec = document.getElementById('sea').value;
+	if(!sec.trim()) {
+		alert('请输入查询内容!');
+		return false;
+	}
+	kfc1();
+}
+//绑定先序遍历函数
+function kfc() {
+	if(k != 0) {
+		pd();
+	} else {
+		goTraverse(root, cback);
+		goTime = setInterval(setGo, 1000)
+	}
+}
+
+function kfc1() {
+	if(k != 0) {
+		pd();
+	} else {
+		goTraverse(root, cback);
+		goTime = setInterval(setGo1, 1000)
+	}
+}
+//遍历元素组成数组
+var cback = function(el) {
+	arr.push(el);
+	console.log(k)
+}
+//随机颜色函数
+function bgc() {
+	var r = Math.floor(Math.random() * 256);
+	var g = Math.floor(Math.random() * 256);
+	var b = Math.floor(Math.random() * 256);
+	return "rgb(" + r + ',' + g + ',' + b + ")";
+}
+//定时加入背景颜色样式
+function setGo() {
+	if(k < arr.length) {
+		arr[k].style.background = bgc();
+		console.log(k)
+		k++;
+	} else {
+		k = 0;
+		clearInterval(goTime)
+	}
+}
+//查询判断
+function setGo1() {
+	var sec = document.getElementById('sea').value;
+	if(k < arr.length) {
+		arr[k].style.background = bgc();
+		console.log(k);
+		if(arr[k].textContent.trim().indexOf(sec) == 0) {
+			for(var f = 0; f < arr.length; f++) {
+				arr[f].style.background = '#fff';
+				arr[k].style.background = '#f00';
+			}
+			return false
+		}
+		k++;
+	} else {
+		k = 0;
+		clearInterval(goTime)
+		alert('未查询到结果')
+	}
+}
+//中序遍历函数
+function goTraverse(node, cback) {
+	if(node !== null) {
+		if(node.childElementCount == 1) {
+			cback(node);
+			goTraverse(node.firstElementChild, cback);
+		} else if(node.childElementCount == 2) {
+			cback(node);
+			goTraverse(node.firstElementChild, cback);
+			goTraverse(node.firstElementChild.nextElementSibling, cback);
+		} else if(node.childElementCount == 3) {
+			cback(node);
+			goTraverse(node.firstElementChild, cback);
+			goTraverse(node.firstElementChild.nextElementSibling, cback);
+			goTraverse(node.lastElementChild, cback)
+		} else if(node.childElementCount == 0) {
+			cback(node);
+		} else if(node.childElementCount == 4) {
+			cback(node);
+			goTraverse(node.firstElementChild, cback);
+			goTraverse(node.firstElementChild.nextElementSibling, cback);
+			goTraverse(node.firstElementChild.nextElementSibling.nextElementSibling, cback)
+			goTraverse(node.lastElementChild, cback)
+		}
+	}
+}
+</script>
+</body>
+</html>
